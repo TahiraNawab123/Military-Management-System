@@ -17,7 +17,7 @@ using namespace std;
 void launchUserSystem() {
     User* user = nullptr;
     string entered_username, entered_password, entered_role;
-
+    // testing the user system
     cout << "\n===== User Login/Register Panel =====\n";
     cout << "Enter username: "; cin >> entered_username;
     cout << "Enter password: "; cin >> entered_password;
