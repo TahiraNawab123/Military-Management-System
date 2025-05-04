@@ -1,0 +1,8 @@
+{
+    "logs": [
+        "[Sun May  4 21:38:32 2025] Message Encrypted.",
+        "[Sun May  4 21:48:58 2025] Message Encrypted.",
+        "[Sun May  4 21:49:06 2025] Message Decrypted.",
+        "[Sun May  4 21:49:17 2025] User Logged Out."
+    ]
+}

@@ -1,0 +1,3 @@
+Motion detected near the gate.
+Heat sensor dected heat.
+Intruder detected.
