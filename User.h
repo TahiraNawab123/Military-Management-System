@@ -52,4 +52,8 @@ public:
 
 };
 
+// Authenticate a user against the persistent users.txt store.
+// Returns true if username/password are valid and fills outRole with the user's role.
+bool authenticateUser(const string& username, const string& password, string& outRole);
+
 #endif

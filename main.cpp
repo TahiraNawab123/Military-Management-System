@@ -15,50 +15,62 @@ using json = nlohmann::json;
 using namespace std;
 
 void launchUserSystem() {
-    User* user = nullptr;
-    string entered_username, entered_password, entered_role;
-    // testing the user system
-    cout << "\n===== User Login/Register Panel =====\n";
-    cout << "Enter username: "; cin >> entered_username;
-    cout << "Enter password: "; cin >> entered_password;
-    cout << "Enter role (Admin/Officer/Soldier): "; cin >> entered_role;
+    cout << "\n=============================================\n";
+    cout << "        MILITARY USER ACCESS PORTAL\n";
+    cout << "=============================================\n";
 
-    if (entered_role == "Admin") user = new Admin();
-    else if (entered_role == "Officer") user = new Officer();
-    else if (entered_role == "Soldier") user = new Soldier();
-    else {
-        cout << "Invalid role!\n";
+    string username, password;
+    cout << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> password;
+
+    string role;
+    if (!authenticateUser(username, password, role)) {
+        // authenticateUser already prints an appropriate message
         return;
     }
 
-    user->registerUser(entered_username, entered_password, entered_role);
-
-    string login_username, login_password;
-    cout << "\nEnter username to login: "; cin >> login_username;
-    cout << "Enter password to login: "; cin >> login_password;
-
-    if (user->loginUser(login_username, login_password)) {
-        cout << "\nAccess Granted! Role: " << user->getRole() << "\n";
-        Message msg;
-        string choice;
-
-        cout << "Do you want to send a message? (yes/no): ";
-        cin >> choice;
-
-        if (choice == "yes" || choice == "y") {
-            string receiver, message_content;
-            cout << "Enter recipient username: "; cin >> receiver;
-            cin.ignore();
-            cout << "Enter your message: "; getline(cin, message_content);
-            msg.sendMessage(login_username, receiver, message_content);
-        }
-
-        cout << "\nYour Messages:\n";
-        msg.receiveMessage(login_username);
-
-        user->performTask();
-        user->viewReport();
+    User* user = nullptr;
+    if (role == "Admin") {
+        user = new Admin();
+    } else if (role == "Officer") {
+        user = new Officer();
+    } else if (role == "Soldier") {
+        user = new Soldier();
+    } else {
+        cout << "Unknown role configured for this user.\n";
+        return;
     }
+
+    // Initialize the in-memory representation for this session
+    user->registerUser(username, password, role);
+
+    cout << "\nAccess Granted! Role: " << role << "\n";
+
+    // Lightweight messaging hub before entering the role dashboard
+    Message msg;
+    string choice;
+
+    cout << "Do you want to send a message before entering the dashboard? (yes/no): ";
+    cin >> choice;
+
+    if (choice == "yes" || choice == "y") {
+        string receiver, message_content;
+        cout << "Enter recipient username: ";
+        cin >> receiver;
+        cin.ignore();
+        cout << "Enter your message: ";
+        getline(cin, message_content);
+        msg.sendMessage(username, receiver, message_content);
+    }
+
+    cout << "\nYour Inbox:\n";
+    msg.receiveMessage(username);
+
+    // Hand over to role-specific dashboard
+    user->performTask();
+    user->viewReport();
 
     delete user;
 }

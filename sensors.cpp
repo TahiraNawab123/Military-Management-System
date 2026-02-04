@@ -111,29 +111,29 @@ bool HeatSensor :: detect (float value) {
         }
     }
     void SensorInventory:: getSensorByID(int ID){
-        for(auto sensor:sensorList){
-if(sensor->getSensorID()==ID){
-cout<<"The Sensor range is "<<sensor->getRange()<<endl;
-cout<<"The location of sensor is "<< sensor->getSensorLocation()<<endl;
-}
-else{
-    cout<<"Sensor ID not found !!"<<endl;
-}
+        bool found = false;
+        for(auto sensor : sensorList){
+            if(sensor->getSensorID() == ID){
+                cout << "The Sensor range is " << sensor->getRange() << endl;
+                cout << "The location of sensor is " << sensor->getSensorLocation() << endl;
+                found = true;
+                break;
+            }
         }
-        
+
+        if (!found) {
+            cout << "Sensor ID not found !!" << endl;
+        }
     }
     void SensorInventory:: removeSensor(int ID){
-        for(auto it=sensorList.begin();it!=sensorList.end();it++){
-if((*it)->getSensorID()==ID){
-sensorList.erase(it);
-
-cout<<"Sensor with id "<<ID<<" is removed "<<endl;
-return;
-}
-else{
-    cout<<"Sensor ID not found !!"<<endl;
-}
+        for(auto it = sensorList.begin(); it != sensorList.end(); ++it){
+            if((*it)->getSensorID() == ID){
+                sensorList.erase(it);
+                cout<<"Sensor with id "<<ID<<" is removed "<<endl;
+                return;
+            }
         }
+        cout<<"Sensor ID not found !!"<<endl;
     }
     int SensorInventory:: getTotalSensors(){
         int count=0;
